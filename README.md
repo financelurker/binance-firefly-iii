@@ -12,11 +12,13 @@ The following movements on your Binance account will be imported to your FireFly
   - lowers/adds funds to/from your "currency" account - the asset account of the coin you have sold or bought in that trade
   - transactions get a tag "binance" assigned
   - transactions get a note "py1binance2firefly3:binance-trade"
-- _**Known limitation:**_ as of now transactions will be imported for every container/script startup. Will come within the next versions. So make sure SYNC_BEGIN_TIMESTAMP is set to a date which only imports a few trades from Binance.
+- Paid fees on trades
+  - For each trade in Binance there is a paid commission (either in BNB or any other coin/token). For this paid commission an additional transaction is created, linking the asset account holding the commission currency and the Binance expense account.
+  - transactions get a tag "binance" assigned
+  - transactions get a note "py1binance2firefly3:binance-fee"
 
 ### ToDos
 
-- Paid fees on trades
 - Deposits from / Withdrawals to your other crypto addresses
 - Received Interest vía lending or staking
 - On-/Off-ramping from or to SEPA asset account (via IBAN-matching)

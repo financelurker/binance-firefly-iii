@@ -16,7 +16,8 @@ def get_relevant_trading_pair_from_binance_trade(binance_trade, list_of_trading_
 def process_buy_trades(list_of_buy, trading_pair):
     list_of_new_transaction_collections = []
     for buy in list_of_buy:
-        new_transaction_collection = TransactionCollection(trading_pair, buy, None, None, None, CollectionType.BUY, None)
+        new_transaction_collection = TransactionCollection(trading_pair, buy, None, None, None, CollectionType.BUY,
+                                                           None)
         list_of_new_transaction_collections.append(new_transaction_collection)
     return list_of_new_transaction_collections
 
@@ -24,7 +25,8 @@ def process_buy_trades(list_of_buy, trading_pair):
 def process_sell_trades(list_of_sell, trading_pair):
     list_of_new_transaction_collections = []
     for sell in list_of_sell:
-        new_transaction_collection = TransactionCollection(trading_pair, sell, None, None, None, CollectionType.SELL, None)
+        new_transaction_collection = TransactionCollection(trading_pair, sell, None, None, None, CollectionType.SELL,
+                                                           None)
         list_of_new_transaction_collections.append(new_transaction_collection)
     return list_of_new_transaction_collections
 
@@ -107,6 +109,11 @@ def augment_transaction_collection_with_firefly_accounts(transaction_collection,
 
     if firefly_account_collection.security == transaction_collection.binance_transaction.get('commissionAsset'):
         transaction_collection.commission_account = firefly_account_collection.expense_account.attributes
+    commission_asset = transaction_collection.binance_transaction.get('commissionAsset')
+
+    if commission_asset in firefly_account_collection.asset_account.attributes.currency_symbol \
+            or commission_asset in firefly_account_collection.asset_account.attributes.currency_code:
+        transaction_collection.from_commission_account = firefly_account_collection.asset_account.attributes
 
 
 def augment_transaction_collections_with_firefly_accounts(transaction_collections, firefly_account_collections):

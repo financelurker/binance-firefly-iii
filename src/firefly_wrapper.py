@@ -7,6 +7,8 @@ import firefly_iii_client
 import config
 from enum import Enum
 
+import hashlib
+
 
 class TradingPair(object):
     def __init__(self, from_coin, to_coin, pair):
@@ -122,10 +124,9 @@ def write_commission(transaction_collection):
         transaction_api = firefly_iii_client.TransactionsApi(api_client)
         list_inner_transactions = []
 
-        currency_code = transaction_collection.from_ff_account.currency_code
-        currency_symbol = transaction_collection.from_ff_account.currency_symbol
-        amount = transaction_collection.binance_transaction.get('quoteQty')
-        foreign_amount = float(transaction_collection.binance_transaction.get('qty'))
+        currency_code = transaction_collection.from_commission_account.currency_code
+        currency_symbol = transaction_collection.from_commission_account.currency_symbol
+        amount = transaction_collection.binance_transaction.get('commission')
 
         tags = ['binance']
         if config.debug:
@@ -134,29 +135,38 @@ def write_commission(transaction_collection):
         split = firefly_iii_client.TransactionSplit(
             amount=amount,
             date=datetime.datetime.fromtimestamp(int(transaction_collection.binance_transaction.get('time') / 1000)),
-            description="Binance | FEE | Security: " + transaction_collection.trading_pair.security + " | Currency: " + currency_code + " | Ticker " + transaction_collection.trading_pair.pair,
+            description="Binance | FEE | Currency: " + currency_code,
             type='withdrawal',
             tags=tags,
-            source_name=transaction_collection.from_ff_account.name,
-            source_type=transaction_collection.from_ff_account.type,
+            source_name=transaction_collection.from_commission_account.name,
+            source_type=transaction_collection.from_commission_account.type,
             currency_code=currency_code,
             currency_symbol=currency_symbol,
             destination_name=transaction_collection.commission_account.name,
             destination_type=transaction_collection.commission_account.type,
             external_id=transaction_collection.binance_transaction.get('id'),
-            notes="py1binance2firefly3:binance-trade"
+            notes="py1binance2firefly3:binance-fee"
         )
+        split.import_hash_v2 = hash_transaction(split.amount, split.date, split.description, split.external_id, split.source_name, split.destination_name, split.tags)
         list_inner_transactions.append(split)
-        new_transaction = firefly_iii_client.Transaction(apply_rules=False, transactions=list_inner_transactions)
+        new_transaction = firefly_iii_client.Transaction(apply_rules=False, transactions=list_inner_transactions, error_if_duplicate_hash=True)
 
         try:
             pass
-            # print('Writing a new transaction.')
+            print('Writing a new paid commission.')
             # pprint(new_transaction)
-            # transaction_api.store_transaction(new_transaction)
+            transaction_api.store_transaction(new_transaction)
         except Exception as e:
-            print('There was an error writing a new transaction' % e)
-            exit(-602)
+            print('There was an error writing a new transaction (probably a duplicate?)')
+
+
+def hash_transaction(amount, date, description, external_id, source_name, destination_name, tags):
+    hashed_result = str(amount) + str(date) + description + str(external_id) + source_name + destination_name
+    for tag in tags:
+        hashed_result += tag
+    hash_object = hashlib.sha256(hashed_result.encode())
+    hex_dig = hash_object.hexdigest()
+    return hex_dig
 
 
 def write_new_transaction(transaction_collection):
@@ -205,16 +215,16 @@ def write_new_transaction(transaction_collection):
             external_id=transaction_collection.binance_transaction.get('id'),
             notes="py1binance2firefly3:binance-trade"
         )
+        split.import_hash_v2 = hash_transaction(split.amount, split.date, split.description, split.external_id, split.source_name, split.destination_name, split.tags)
         list_inner_transactions.append(split)
-        new_transaction = firefly_iii_client.Transaction(apply_rules=False, transactions=list_inner_transactions)
+        new_transaction = firefly_iii_client.Transaction(apply_rules=False, transactions=list_inner_transactions, error_if_duplicate_hash=True)
 
         try:
-            print('Writing a new transaction.')
+            print('Writing a new trade.')
             # pprint(new_transaction)
             transaction_api.store_transaction(new_transaction)
         except Exception as e:
-            print('There was an error writing a new transaction' % e)
-            exit(-602)
+            print('There was an error writing a new transaction (probably a duplicate?)')
 
 
 def get_binance_currencies_for_accounts(accounts):
