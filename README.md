@@ -4,6 +4,9 @@ This collection of scripts lets you sync your Binance account to your FireFly-II
 
 This module runs stateless next to your Firefly-iii instance (as Docker container or standalone) and periodically processes new data from Binance.
 
+Disclaimer:
+This app needs access tokens for your Firefly-III instance and a valid API-Key for your Binance account. It is aboslutely okay to only give read-permissions to that Binance API-Key, as there will be no writing actions to Binance itself.
+
 ## Imported Movements from Binance to Firefly-III
 
 The following movements on your Binance account will be imported to your FireFly-III instance:
@@ -18,6 +21,9 @@ The following movements on your Binance account will be imported to your FireFly
   - For each trade in Binance there is a paid commission (either in BNB or any other coin/token). For this paid commission an additional transaction is created, linking the asset account holding the commission currency and the Binance expense account.
   - transactions get a tag "binance" assigned
   - transactions get a note "py1binance2firefly3:binance-fee"
+- _**Known limitations:**_
+  - Only 500 transactions will be imported for each trading pair. (I'll fix that in the future with a more sophisticated import query with the Binance API)
+  - Binance API rate limiting: if you run this app in debug mode the Binance API will be polled every 10 seconds. You'll probably get blocked sometime from further API calls. Make sure that you're using Binance testnet when running this in debug-mode to not interfer with your IP rates at Binance (or you know what you're doing).
 
 ### ToDos
 
