@@ -57,6 +57,26 @@ To import your movements from Binance your FireFly-III installation has to be ex
 - Firefly-III Version 5.4.6
 - Binance API Change Log up to 2021-04-08
 
+### Run as Docker container from Docker Hub
+
+Pull the image and run the container passing the needed environmental variables.
+
+```
+docker pull financelurker/binance-firefly-iii:latest
+docker run --env....
+```
+
+### Run as Docker container from repository
+
+Check out the repository and build the docker image locally. Build the container and then run it by passing the needed environmental variables.
+
+```
+git clone https://github.com/financelurker/binance-firefly-iii.git
+cd binance-firefly-iii
+docker build .
+docker run --env....
+```
+
 ### Run it standalone
 
 Check out the repository, make sure you set the environmental variables and start thy python script:
@@ -72,17 +92,6 @@ python main.py
 ```
 
 If you are having any troubles, make sure you're using **python 3.9** (the corresponding Docker image is **"python:3.9-slim-buster"** for version referencing).
-
-### Run as Docker container
-
-Check out the repository and build the docker image locally. Pass the environmental variables with your "docker run" command.
-
-```
-git clone https://github.com/financelurker/binance-firefly-iii.git
-cd binance-firefly-iii
-docker build .
-docker run --env....
-```
 
 ### Configuration
 
