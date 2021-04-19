@@ -1,6 +1,8 @@
 # binance-firefly-iii
 
-This collection of scripts lets you sync your Binance account to your FireFly-III account. Keep an overview of your crypto assets 
+This collection of scripts lets you sync your Binance account to your FireFly-III account. Keep an overview of your traded crypto assets.
+
+This module runs stateless next to your Firefly-iii instance (as Docker container or standalone) and periodically processes new data from Binance.
 
 ## Imported Movements from Binance to Firefly-III
 
