@@ -14,4 +14,4 @@ COPY src/sync_timer.py /opt/binance-firefly-iii/
 COPY src/sync_logic.py /opt/binance-firefly-iii/
 COPY README.md /opt/binance-firefly-iii/
 
-ENTRYPOINT ["/usr/local/bin/python /opt/binance-firefly-iii/main.py"]
+CMD python /opt/binance-firefly-iii/main.py
