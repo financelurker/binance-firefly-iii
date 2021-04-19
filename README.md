@@ -2,7 +2,7 @@
 
 This collection of scripts lets you sync your Binance account to your FireFly-III account. Keep an overview of your crypto assets 
 
-## Imported Movements
+## Imported Movements from Binance to Firefly-III
 
 The following movements on your Binance account will be imported to your FireFly-III instance:
 
