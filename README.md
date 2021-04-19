@@ -1,11 +1,11 @@
 # binance-firefly-iii
 
-This collection of scripts lets you sync your Binance account to your FireFly-III account. Keep an overview of your traded crypto assets.
+This service lets you import your Binance movements to your FireFly-III account. Keep an overview of your traded crypto assets.
 
 This module runs stateless next to your Firefly-iii instance (as Docker container or standalone) and periodically processes new data from Binance. Just spin it up and watch your trades being imported right away.
 
 Disclaimer:
-This app needs access tokens for your Firefly-III instance and a valid API-Key for your Binance account. It is aboslutely okay to only give read-permissions to that Binance API-Key, as there will be no writing actions to Binance itself.
+This app needs access tokens for your Firefly-III instance, and a valid API-Key for your Binance account. It is absolutely okay to only give read-permissions to that Binance API-Key, as there will be no writing actions to Binance itself.
 
 ## Imported Movements from Binance to Firefly-III
 
@@ -18,7 +18,7 @@ The following movements on your Binance account will be imported to your FireFly
   - transactions get a tag "binance" assigned
   - transactions get a note "py1binance2firefly3:binance-trade"
 - Paid fees on trades
-  - For each trade in Binance there is a paid commission (either in BNB or any other coin/token). For this paid commission an additional transaction is created, linking the asset account holding the commission currency and the Binance expense account.
+  - For each trade in Binance there is a paid commission (either in BNB or any other coin/token). For this paid commission an additional transaction is created, linking the asset account holding the commission currency, and the Binance expense account.
   - transactions get a tag "binance" assigned
   - transactions get a note "py1binance2firefly3:binance-fee"
 - _**Known limitations:**_
@@ -111,13 +111,13 @@ Make sure you have them set as there is no exception handling for missing values
   - Description: Your access token you have created within your Firefly-III instance.
   - Type: string
 - **BINANCE_API_KEY**
-  - Description: The api key of your binance account. It is highly recommended to create a dedicated api key with only read permissions on your Binance account.
+  - Description: The api key of your binance account. It is highly recommended creating a dedicated api key with only read permissions on your Binance account.
   - Type: string
 - **BINANCE_API_SECRET**
   - Description: The api secret of that api key.
   - Type: string
 - **SYNC_BEGIN_TIMESTAMP**
-  - Description: The date of the transactions must not be older than this timestamp to be imported. This helps you to import from back to 2017 initially and once you have imported them all you can set the date to a date near the container runtime start to reduce probable bandwith-costs on Binance-side. (e.g. "2018-01-22")
+  - Description: The date of the transactions must not be older than this timestamp to be imported. This helps you to import from back to 2017 initially and once you have imported them all you can set the date to a date near the container runtime start to reduce probable bandwidth-costs on Binance-side. (e.g. "2018-01-22")
   - Type: date [ yyyy-MM-dd ]
 - **SYNC_TRADES_INTERVAL**
   - Description: This defines on how often this module will check for new Binance trades.
