@@ -2,7 +2,7 @@
 
 This collection of scripts lets you sync your Binance account to your FireFly-III account. Keep an overview of your traded crypto assets.
 
-This module runs stateless next to your Firefly-iii instance (as Docker container or standalone) and periodically processes new data from Binance.
+This module runs stateless next to your Firefly-iii instance (as Docker container or standalone) and periodically processes new data from Binance. Just spin it up and watch your trades being imported right away.
 
 Disclaimer:
 This app needs access tokens for your Firefly-III instance and a valid API-Key for your Binance account. It is aboslutely okay to only give read-permissions to that Binance API-Key, as there will be no writing actions to Binance itself.
