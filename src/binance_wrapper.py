@@ -25,6 +25,8 @@ def connect():
         global client
         client = new_client
 
+        lending_account = client.get_lending_account()
+
         return True
     except Exception as e:
         print('Cannot connect to your Binance account.' % e)
@@ -59,6 +61,12 @@ def get_trading_pair_message_log(list_of_trading_pairs):
         trading_pair_counter += 1
     log_message += "]"
     return log_message
+
+
+def get_lendings():
+    global client
+
+    pass
 
 
 def get_trades(from_timestamp, to_timestamp, list_of_trading_pairs):
